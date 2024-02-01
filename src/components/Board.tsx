@@ -7,8 +7,9 @@ const Board = () => {
 
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 5; j++) {
-        // TODO: need to keep track of each letters
-        allLetters.push(<Letter />);
+        // attempPosition for tracking row position
+        // letterPosition for tracking column position
+        allLetters.push(<Letter attemptPosition={i} letterPosition={j} />);
       }
     }
 
