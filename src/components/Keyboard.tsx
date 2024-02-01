@@ -5,6 +5,8 @@ const Keyboard = () => {
   const keys2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const keys3 = ["Z", "X", "C", "V", "B", "N", "M"];
 
+  // const { onSelectLetter } = useContext(AppContextType);
+
   return (
     <>
       <div className="flex flex-col items-center justify-center space-y-2">
