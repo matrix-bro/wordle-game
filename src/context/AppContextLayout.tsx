@@ -9,6 +9,7 @@ type AppContextType = {
   board: string[][];
   onSelectLetter: (keyValue: string) => void;
   onEnter: () => void;
+  onDelete: () => void;
   // currentAttempt: { attempt: number; letterPos: number };
 };
 
@@ -58,11 +59,29 @@ const AppContextLayout = ({ children }: Props) => {
     });
   };
 
+  // On Delete Key
+  const onDelete = () => {
+    console.log("ON DELETE");
+    // return if there is no letters
+    if (currentAttempt.letterPos === 0) return;
+
+    // remove letter from the board
+    const newBoard = [...board];
+    newBoard[currentAttempt.attempt][currentAttempt.letterPos - 1] = "";
+    setBoard(newBoard);
+
+    // decrease currentAttempt
+    setCurrentAttempt({
+      ...currentAttempt,
+      letterPos: currentAttempt.letterPos - 1,
+    });
+  };
+
   console.log("Default", board);
 
   return (
     <>
-      <AppContext.Provider value={{ board, onSelectLetter, onEnter }}>
+      <AppContext.Provider value={{ board, onSelectLetter, onEnter, onDelete }}>
         {children}
       </AppContext.Provider>
     </>

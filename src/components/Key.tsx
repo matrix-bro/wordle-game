@@ -2,12 +2,14 @@ import { useContext } from "react";
 import { AppContext } from "../context/AppContextLayout";
 
 const Key = ({ keyValue }: { keyValue: string }) => {
-  const { onSelectLetter, onEnter } = useContext(AppContext);
+  const { onSelectLetter, onEnter, onDelete } = useContext(AppContext);
 
   const selectLetter = () => {
     console.log("selected", keyValue);
     if (keyValue === "ENTER") {
       onEnter();
+    } else if (keyValue === "DELETE") {
+      onDelete();
     } else {
       onSelectLetter(keyValue);
     }
