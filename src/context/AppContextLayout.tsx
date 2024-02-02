@@ -8,6 +8,7 @@ type Props = {
 type AppContextType = {
   board: string[][];
   onSelectLetter: (keyValue: string) => void;
+  onEnter: () => void;
   // currentAttempt: { attempt: number; letterPos: number };
 };
 
@@ -24,6 +25,9 @@ const AppContextLayout = ({ children }: Props) => {
 
   const onSelectLetter = (keyValue: string) => {
     console.log("IN ", keyValue);
+    // return after typing 5 letters
+    if (currentAttempt.letterPos > 4) return;
+
     const newBoard = [...board];
     newBoard[currentAttempt.attempt][currentAttempt.letterPos] = keyValue;
     setBoard(newBoard);
@@ -34,11 +38,31 @@ const AppContextLayout = ({ children }: Props) => {
       letterPos: currentAttempt.letterPos + 1,
     });
   };
+
+  // On Enter Key
+  const onEnter = () => {
+    console.log("Enter");
+    // do nothing or return until the user has typed 5 letters
+    // after typing four letters, the 'currentAttempt.letterPos' will increase by 1, so it will be 5
+    if (currentAttempt.letterPos !== 5) return;
+
+    // TODO: Get the current word
+    //  - check if the current word is a valid word
+    //  - if valid
+    //    - check if the current word is correct
+
+    setCurrentAttempt({
+      ...currentAttempt,
+      attempt: currentAttempt.attempt + 1,
+      letterPos: 0,
+    });
+  };
+
   console.log("Default", board);
 
   return (
     <>
-      <AppContext.Provider value={{ board, onSelectLetter }}>
+      <AppContext.Provider value={{ board, onSelectLetter, onEnter }}>
         {children}
       </AppContext.Provider>
     </>
