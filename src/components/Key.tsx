@@ -5,7 +5,7 @@ const Key = ({ keyValue }: { keyValue: string }) => {
   const { onSelectLetter, onEnter, onDelete } = useContext(AppContext);
 
   const selectLetter = () => {
-    console.log("selected", keyValue);
+    // console.log("selected", keyValue);
     if (keyValue === "ENTER") {
       onEnter();
     } else if (keyValue === "DELETE") {

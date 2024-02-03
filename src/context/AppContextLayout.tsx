@@ -1,5 +1,6 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 import { defaultBoard } from "../utils/defaultBoard";
+import { generateWordSet } from "../utils/generateWords";
 
 type Props = {
   children: ReactNode;
@@ -24,8 +25,19 @@ const AppContextLayout = ({ children }: Props) => {
     letterPos: 0,
   });
 
+  const [wordSet, setWordSet] = useState(new Set<string>());
+  const [correctWord, setCorrectWord] = useState("");
+
+  useEffect(() => {
+    generateWordSet().then((words) => {
+      setWordSet(words.wordSet);
+      setCorrectWord(words.todaysWord);
+    });
+  }, []);
+
+  console.log("Correct Word", correctWord);
+
   const onSelectLetter = (keyValue: string) => {
-    console.log("IN ", keyValue);
     // return after typing 5 letters
     if (currentAttempt.letterPos > 4) return;
 
@@ -42,9 +54,8 @@ const AppContextLayout = ({ children }: Props) => {
 
   // On Enter Key
   const onEnter = () => {
-    console.log("Enter");
     // do nothing or return until the user has typed 5 letters
-    // after typing four letters, the 'currentAttempt.letterPos' will increase by 1, so it will be 5
+    // the 'currentAttempt.letterPos' will increase by 1, after typing four letters it will become 5
     if (currentAttempt.letterPos !== 5) return;
 
     // TODO: Get the current word
@@ -52,16 +63,33 @@ const AppContextLayout = ({ children }: Props) => {
     //  - if valid
     //    - check if the current word is correct
 
-    setCurrentAttempt({
-      ...currentAttempt,
-      attempt: currentAttempt.attempt + 1,
-      letterPos: 0,
-    });
+    let currentWord = "";
+    for (let i = 0; i < 5; i++) {
+      currentWord += board[currentAttempt.attempt][i];
+    }
+
+    if (wordSet.has(currentWord.toLowerCase())) {
+      setCurrentAttempt({
+        ...currentAttempt,
+        attempt: currentAttempt.attempt + 1,
+        letterPos: 0,
+      });
+    } else {
+      alert("Invalid Word");
+      return;
+    }
+
+    // console.log("Current WOrd Current WOrd", currentWord);
+
+    if (currentWord.toLowerCase() === correctWord) {
+      console.log("You won");
+      return;
+    }
   };
 
   // On Delete Key
   const onDelete = () => {
-    console.log("ON DELETE");
+    // console.log("ON DELETE");
     // return if there is no letters
     if (currentAttempt.letterPos === 0) return;
 
@@ -77,7 +105,7 @@ const AppContextLayout = ({ children }: Props) => {
     });
   };
 
-  console.log("Default", board);
+  // console.log("Default", board);
 
   return (
     <>
