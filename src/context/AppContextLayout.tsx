@@ -11,7 +11,8 @@ type AppContextType = {
   onSelectLetter: (keyValue: string) => void;
   onEnter: () => void;
   onDelete: () => void;
-  // currentAttempt: { attempt: number; letterPos: number };
+  currentAttempt: { attempt: number; letterPos: number };
+  correctWord: string;
 };
 
 export const AppContext = createContext({} as AppContextType);
@@ -109,7 +110,16 @@ const AppContextLayout = ({ children }: Props) => {
 
   return (
     <>
-      <AppContext.Provider value={{ board, onSelectLetter, onEnter, onDelete }}>
+      <AppContext.Provider
+        value={{
+          board,
+          onSelectLetter,
+          onEnter,
+          onDelete,
+          currentAttempt,
+          correctWord,
+        }}
+      >
         {children}
       </AppContext.Provider>
     </>
