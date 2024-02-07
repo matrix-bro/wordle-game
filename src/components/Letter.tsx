@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContextLayout";
 
 type Props = {
@@ -7,7 +7,8 @@ type Props = {
 };
 
 const Letter = ({ attemptPosition, letterPosition }: Props) => {
-  const { board, currentAttempt, correctWord } = useContext(AppContext);
+  const { board, currentAttempt, correctWord, setDisabledLetters } =
+    useContext(AppContext);
 
   // after typing letters, it will store letters in the board accordingly, and we can access the letter from the board
   const letter = board[attemptPosition][letterPosition];
@@ -23,6 +24,15 @@ const Letter = ({ attemptPosition, letterPosition }: Props) => {
   const letterState =
     currentAttempt.attempt > attemptPosition &&
     (correct ? "bg-green-400" : almost ? "bg-orange-400" : "bg-gray-200");
+
+  // after guessing words, disable keys - (not correct keys, not almost correct keys) from the guessed word
+  // we donot want to disable correct and almost correct keys, cause user will have to type them to guess the correct word
+  // we will store it and access in key component
+  useEffect(() => {
+    if (letter !== "" && !correct && !almost) {
+      setDisabledLetters((prev) => [...prev, letter]);
+    }
+  }, [currentAttempt.attempt]);
 
   return (
     <>

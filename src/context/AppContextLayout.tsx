@@ -13,6 +13,8 @@ type AppContextType = {
   onDelete: () => void;
   currentAttempt: { attempt: number; letterPos: number };
   correctWord: string;
+  disabledLetters: string[];
+  setDisabledLetters: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const AppContext = createContext({} as AppContextType);
@@ -28,6 +30,7 @@ const AppContextLayout = ({ children }: Props) => {
 
   const [wordSet, setWordSet] = useState(new Set<string>());
   const [correctWord, setCorrectWord] = useState("");
+  const [disabledLetters, setDisabledLetters] = useState<string[]>([]);
 
   useEffect(() => {
     generateWordSet().then((words) => {
@@ -37,6 +40,7 @@ const AppContextLayout = ({ children }: Props) => {
   }, []);
 
   console.log("Correct Word", correctWord);
+  // console.log("Disabled Letters", disabledLetters);
 
   const onSelectLetter = (keyValue: string) => {
     // return after typing 5 letters
@@ -118,6 +122,8 @@ const AppContextLayout = ({ children }: Props) => {
           onDelete,
           currentAttempt,
           correctWord,
+          disabledLetters,
+          setDisabledLetters,
         }}
       >
         {children}
