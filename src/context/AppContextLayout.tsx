@@ -15,6 +15,7 @@ type AppContextType = {
   correctWord: string;
   disabledLetters: string[];
   setDisabledLetters: React.Dispatch<React.SetStateAction<string[]>>;
+  gameOver: { isGameOver: boolean; guessedWord: boolean };
 };
 
 export const AppContext = createContext({} as AppContextType);
@@ -31,6 +32,10 @@ const AppContextLayout = ({ children }: Props) => {
   const [wordSet, setWordSet] = useState(new Set<string>());
   const [correctWord, setCorrectWord] = useState("");
   const [disabledLetters, setDisabledLetters] = useState<string[]>([]);
+  const [gameOver, setGameOver] = useState<AppContextType["gameOver"]>({
+    isGameOver: false,
+    guessedWord: false,
+  });
 
   useEffect(() => {
     generateWordSet().then((words) => {
@@ -88,6 +93,7 @@ const AppContextLayout = ({ children }: Props) => {
 
     if (currentWord.toLowerCase() === correctWord) {
       console.log("You won");
+      setGameOver({ isGameOver: true, guessedWord: true });
       return;
     }
   };
@@ -124,6 +130,7 @@ const AppContextLayout = ({ children }: Props) => {
           correctWord,
           disabledLetters,
           setDisabledLetters,
+          gameOver,
         }}
       >
         {children}

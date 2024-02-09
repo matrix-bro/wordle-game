@@ -1,11 +1,16 @@
+import { useContext } from "react";
 import Key from "./Key";
+import { AppContext } from "../context/AppContextLayout";
+import GameOver from "./GameOver";
 
 const Keyboard = () => {
   const keys1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const keys2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const keys3 = ["Z", "X", "C", "V", "B", "N", "M"];
 
-  // const { onSelectLetter } = useContext(AppContextType);
+  const { gameOver } = useContext(AppContext);
+
+  if (gameOver.isGameOver) return <GameOver />;
 
   return (
     <>
