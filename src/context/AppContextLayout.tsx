@@ -96,6 +96,11 @@ const AppContextLayout = ({ children }: Props) => {
       setGameOver({ isGameOver: true, guessedWord: true });
       return;
     }
+
+    if (currentAttempt.attempt == 5) {
+      setGameOver({ isGameOver: true, guessedWord: false });
+      return;
+    }
   };
 
   // On Delete Key
